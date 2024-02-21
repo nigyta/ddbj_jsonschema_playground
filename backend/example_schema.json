@@ -1,0 +1,94 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "DDBJ JSON Schema Example",
+    "description": "Minimum example of json schema for DDBJ submission template",
+    "type": "object",
+    "properties" :{
+        "data_type": {
+            "type": "string",
+            "enum":["genome",  "draft_genome", "transcriptome", "metagenome", "metatranscriptome", "virome", "synthetic", "other"],
+            "default": "genome"
+        },
+        "bioproject": {
+            "name": "bioproject",
+            "label": "BioProject ID",
+            "qualifier": "project",
+            "feature": "DBLINK",
+            "entry": "COMMON",
+            "type": "string",
+            "pattern": "^PRJ[A-Z]{1,2}[0-9]{4,8}$",
+            "example": "PRJD99999",
+            "help": "BioProject Accession number e.g. PRJD99999"
+        },
+        "division": {
+            "name": "division",
+            "label": "Data Division",
+            "qualifier": "keyword",
+            "feature": "DIVISION",
+            "entry": "COMMON",
+            "type": "string",
+            "example": "CON",
+            "help": "Keyword for the data division. Optional. For example, WGS, TSA, GSS, EST, etc.",
+            "enum": ["CON", "ENV", "TSA"]
+        },
+        "keyword": {
+            "name": "keyword",
+            "label": "Keyword",
+            "qualifier": "keyword",
+            "feature": "KEYWORD",
+            "entry": "COMMON",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": ["WGS", "TSA", "GSS", "EST", "STANDARD_DRAFT", "HIGH_QUALITY_DRAFT", "IMPROVED_HIGH_QUALITY_DRAFT"]
+            },
+            "example": "WGS",
+            "help": "Keyword for the submission. For example, WGS, TSA, GSS, EST, etc."           
+        },
+        "sra": {
+            "name": "sra",
+            "label": "SRA accession",
+            "qualifier": "sequence read archive",
+            "feature": "DBLINK",
+            "entry": "COMMON",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "^[SED]RR[0-9]{6}$"
+            },
+            "example": ["DRR000001", "DRR000002"],
+            "help": "Accession numbers of the sequence read archive (SRA) database. For example, DRR000001, DRR000002, etc."
+        }
+    },
+    "required": ["data_type", "bioproject"],
+
+    "dependencies": {
+        "data_type": {
+            "oneOf": [
+                {
+                    "properties": {
+                        "data_type": {
+                            "enum": ["genome", "draft_genome"]
+                        },
+                        "assembly": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["assembly", "keyword"]
+                },
+                {
+                    "properties": {
+                        "data_type": {
+                            "enum": ["transcriptome", "metagenome", "metatranscriptome", "virome", "synthetic", "other"]
+                        },
+                        "assembly": {
+                            "type": "string"
+                        }
+
+                    }
+                }
+            ]
+        }
+    }
+        
+}

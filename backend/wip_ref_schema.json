@@ -1,0 +1,56 @@
+,
+        "journal": {
+            "name": "journal",
+            "label": "Journal",
+            "qualifier": "journal",
+            "feature": "REFERENCE",
+            "entry": "COMMON",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9',\\.\\- ]*$",
+            "example": "Nature",
+            "help": "Journal name"
+        },
+        "volume": {
+            "name": "volume",
+            "label": "Volume",
+            "qualifier": "volume",
+            "feature": "REFERENCE",
+            "entry": "COMMON",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9',\\.\\- ]*$",
+            "example": "123",
+            "help": "Journal volume"
+        },
+        "start_page": {
+            "name": "start_page",
+            "label": "Start Page",
+            "qualifier": "start_page",
+            "feature": "REFERENCE",
+            "entry": "COMMON",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9',\\.\\- ]*$",
+            "example": "123",
+            "help": "Start page of the paper"
+        },
+        "end_page": {
+            "name": "end_page",
+            "label": "End Page",
+            "qualifier": "end_page",
+            "feature": "REFERENCE",
+            "entry": "COMMON",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9',\\.\\- ]*$",
+            "example": "125",
+            "help": "End page of the paper"
+        },
+        "pubmed_id": {
+            "name": "pubmed_id",
+            "label": "PubMed ID",
+            "qualifier": "pubmed_id",
+            "feature": "REFERENCE",
+            "entry": "COMMON",
+            "type": "string",
+            "pattern": "^[0-9]*$",
+            "example": "12345678",
+            "help": "PubMed ID of the paper"
+        }
