@@ -1,9 +1,10 @@
-# ddbj_submission_schema_prototype
+# DDBJ JSONschema Playground
 
 DDBJ JSON schema 開発のための実験用レポジトリ
 JSON schemaを使ったvalidationとフォーム自動生成の試作を行う
 
 Experimental playground for the development of DDBJ JSON schema
+
 
 ### Implementation
 - Backend: Python, FastAPI, pyjsonchema
@@ -13,16 +14,16 @@ Experimental playground for the development of DDBJ JSON schema
 
 1. Get the source code  
 ```
-git clone git@github.com:nigyta/ddbj_submission_schema_prototype.git
+git clone git@github.com:nigyta/ddbj_jsonschema_playground.git
 
 or
 
-git clone https://github.com/nigyta/ddbj_submission_schema_prototype.git
+git clone https://github.com/nigyta/ddbj_jsonschema_playground.git
 ```
 
 2. Build the Docker containers  
 ```
-cd ddbj_submission_schema_prototype
+cd ddbj_jsonschema_playground
 docker-compose -f docker-compose-dev.yml build
 ```
 or
@@ -62,5 +63,9 @@ class Schema(str, Enum):
     TEST = 'test'
     TEST2 = 'test_2'
 ```
+
+## Development within containers using VSCode
+`Open Folder in Container` and choose `frontend` or `backend` (or both in different windows). The services wil automatically start and you can start editing the code.  
+For the first time, you need to install the Remote - Containers extension.  
 
 
