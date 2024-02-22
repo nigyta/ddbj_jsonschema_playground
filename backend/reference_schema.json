@@ -6,7 +6,7 @@
     "properties" :{
         "title": {
             "name": "title",
-            "label": "Reference Title",
+            "title": "Reference Title",
             "qualifier": "title",
             "feature": "REFERENCE",
             "entry": "COMMON",
@@ -17,7 +17,7 @@
         },
         "author": {
             "name": "author",
-            "label": "Author",
+            "title": "Author",
             "qualifier": "keyword",
             "feature": "REFERENCE",
             "entry": "COMMON",
@@ -27,11 +27,12 @@
                 "pattern": "^[A-Za-z0-9',\\.\\-]*$"
             },
             "example": ["Robertson,G.R.", "Mishima,H."],
+            "minItems": 1,
             "help": "Keyword for the data division. Optional. For example, WGS, TSA, GSS, EST, etc."
         },
         "status": {
             "name": "status",
-            "label": "Status",
+            "title": "Status",
             "qualifier": "status",
             "feature": "REFERENCE",
             "entry": "COMMON",
@@ -43,7 +44,7 @@
         },
         "year": {
             "name": "year",
-            "label": "Year",
+            "title": "Year",
             "qualifier": "year",
             "feature": "REFERENCE",
             "entry": "COMMON",
@@ -54,6 +55,7 @@
             "help": "Reference year"           
         }
     },
+    "required": ["title", "author", "status", "year"],    
     "dependencies": {
         "status": {
             "oneOf": [
@@ -61,11 +63,6 @@
                     "properties": {
                         "status": {
                             "enum": ["Unpublished"]
-                        },
-                        "year": {
-                            "type": "integer",
-                            "minimum": 1980,
-                            "maximum": 2100
                         }
                     }
                 },
@@ -76,7 +73,7 @@
                         },
                         "journal": {
                             "name": "journal",
-                            "label": "Journal",
+                            "title": "Journal",
                             "qualifier": "journal",
                             "feature": "REFERENCE",
                             "entry": "COMMON",
@@ -85,35 +82,42 @@
                             "example": "Nature",
                             "help": "Journal name"
                         }
-                    }
+                    },
+                    "required": ["journal"]
                 },
                 {
                     "properties": {
                         "status": {
                             "enum": ["Published"]
                         },
-                        "year": {
-                            "type": "integer",
-                            "minimum": 1980,
-                            "maximum": 2100
-                        },
                         "journal": {
+                            "name": "journal",
+                            "title": "Journal",
+                            "qualifier": "journal",
+                            "feature": "REFERENCE",
+                            "entry": "COMMON",
                             "type": "string",
-                            "pattern": "^[A-Za-z0-9',\\.\\- ]*$"
+                            "pattern": "^[A-Za-z0-9',\\.\\- ]*$",
+                            "example": "Nature",
+                            "help": "Journal name"
                         },
                         "volume": {
+                            "title": "Volume",
                             "type": "string",
                             "pattern": "^[A-Za-z0-9',\\.\\- ]*$"
                         },
                         "start_page": {
+                            "title": "Start page",
                             "type": "string",
                             "pattern": "^[A-Za-z0-9',\\.\\- ]*$"
                         },
                         "end_page": {
+                            "title": "End page",
                             "type": "string",
                             "pattern": "^[A-Za-z0-9',\\.\\- ]*$"
                         },
                         "pubmed_id": {
+                            "title": "PubMed ID (optional)",
                             "type": "string",
                             "pattern": "^[0-9]*$"
                         },
@@ -125,11 +129,10 @@
                                 }
                         }                        
                     },
-                    "required": ["journal"]
+                    "required": ["journal", "volume", "start_page"],
+                    "dependencies": {"end_page": ["start_page"]}
                 }
             ]
         }
-    },
-    "required": ["title"]
-        
+    }   
 }

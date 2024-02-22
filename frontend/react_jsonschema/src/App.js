@@ -4,6 +4,8 @@ import validator from '@rjsf/validator-ajv8';
 import Form from '@rjsf/bootstrap-4';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -18,65 +20,99 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //   },
 // };
 
+// submit ボタンを非表示にする
+const uiSchema = {
+    // この部分でsubmitボタンをカスタマイズ
+    "ui:submitButtonOptions": {
+      "noreferrer": true, // カスタムプロパティを追加することも可能
+      "props": {
+        "style": {
+          "display": "none" // submitボタンを非表示にする
+        }
+      }
+    }
+  };
 
 const log = (type) => console.log.bind(console, type);
 
 function App() {
 
-  const [schemaName, setSchemaName] = useState("reference");
-  const [schemaTypes, setSchemaTypes] = useState(null);
-  const [schema, setSchema] = useState(null);
+    const [schemaName, setSchemaName] = useState("reference");
+    const [schemaTypes, setSchemaTypes] = useState(null);
+    const [schema, setSchema] = useState(null);
+    const [formData, setFormData] = useState(null);
 
-  useEffect(() => {
-    // schemaの一覧を取得
-    axios.get('http://localhost:8000/get_schema_types',{
-      params: {_: new Date().getTime()}
-    })
-      .then(response => setSchemaTypes(response.data)) // レスポンスからデータを取得してセット
-      .catch(error => console.error('Error fetching data:', error));
-  }, []); // 空の依存配列でエフェクトを一度だけ実行
-
-
-  useEffect(() => {
-    // jsonschema 取得
-    console.log("Schema Selected:", schemaName)
-    axios.post('http://localhost:8000/schema',{name: schemaName})
-      .then((response) => {console.log("fetched");setSchema(response.data)}) // レスポンスからデータを取得してセット
-      .catch(error => console.error('Error fetching data:', error));
-    console.log(schema);
-  }, [schemaName]);
+    useEffect(() => {
+        // schemaの一覧を取得
+        console.log("fetching schema types")
+        axios.get('http://localhost:8000/get_schema_types', {
+            params: { _: new Date().getTime() }
+        })
+            .then(response => setSchemaTypes(response.data)) // レスポンスからデータを取得してセット
+            .catch(error => console.error('Error fetching data:', error));
+    }, []); // 空の依存配列でエフェクトを一度だけ実行
 
 
-  const on_schema_type_change = (e) => {
-    // console.log(e.formData.name);
-    setSchemaName(e.formData.name);
-  }
+    useEffect(() => {
+        // jsonschema 取得
+        console.log("Schema Selected:", schemaName)
+        fetch_schema(schemaName);
+    }, [schemaName]);
 
-  return (
-    <div className="App container">
-    {schemaTypes ?
-      <Form schema={schemaTypes} validator={validator} onChange={on_schema_type_change}>
-      </Form>
-    :
-      <p>loading...</p>
+
+    const fetch_schema = (name) => {
+        // jsonschema 取得
+        axios.post('http://localhost:8000/schema', { name: name })
+            .then((response) => { console.log("fetched"); setSchema(response.data) }) // レスポンスからデータを取得してセット
+            .catch(error => console.error('Error fetching data:', error));
     }
 
-    <hr/><br/><br/>
-
-    {schema ?
-      <Form
-          schema={schema}
-          validator={validator}
-          onChange={log('changed')}
-          onSubmit={log('submitted')}
-          onError={log('errors')}
-      >
-      </Form>
-    :
-      <p>loading...</p>
+    const on_schema_type_change = (e) => {
+        console.log(e.formData.name);
+        setSchemaName(e.formData.name);
     }
-    </div>
-  );
+
+    const on_form_change = (e) => {
+        console.log(e.formData);
+        setFormData(e.formData);
+    }
+
+    return (
+        <div className="App container">
+            <Row>
+                <Col>
+                    {schemaTypes ?
+                        <Form schema={schemaTypes} validator={validator} uiSchema={uiSchema} onChange={on_schema_type_change}>
+                        </Form>
+                        :
+                        <p>loading...</p>
+                    }
+
+                    <hr /><br /><br />
+
+                    {schema ?
+                        <Form
+                            schema={schema}
+                            validator={validator}
+                            onChange={on_form_change}
+                            onSubmit={log('submitted')}
+                            onError={log('errors')}
+                        >
+
+                        </Form>
+                        :
+                        <p>loading...</p>
+                    }
+                </Col>
+                <Col>
+                    <h3>Form Data</h3>
+                    {formData ? <code>{JSON.stringify(formData, null, 2)}</code> : <p>...</p>}
+                    <h3>Schema</h3>
+                    {schema ? <code>{JSON.stringify(schema, null, 2)}</code> : <p>...</p>}
+                </Col>
+            </Row>
+        </div>
+    );
 }
 
 export default App;

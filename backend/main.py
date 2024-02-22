@@ -41,6 +41,7 @@ async def read_root():
 
 @app.get("/get_schema_types")
 async def get_schema_types():
+    print(SchemaType.model_json_schema())
     return SchemaType.model_json_schema()
 
 
