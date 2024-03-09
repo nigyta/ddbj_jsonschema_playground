@@ -21,18 +21,32 @@ app.add_middleware(
 
 # To add Json schema file, update this dictionary and Schema class
 json_schema_files = {
+    "dev": "test_schema.json",
+    "ddbj_dev1": "ddbj_submission_dev1.json",
+    "minimum": "example_schema_minimum.json",
+    "submission_category": "data submission_category.json",
     "reference": "reference_schema.json",
+    "multi_reference": "reference_schema_multi.json",
     "test": "example_schema.json",
-    "test_2": "example_schema_1.json"
+    "test_2": "example_schema_1.json",
 }
 
 class Schema(str, Enum):
+    DEV = 'dev'
+    DEV1 = 'ddbj_dev1'
+    MINIMUM = 'minimum'
+    CATEGORY = 'submission_category'
     REFERENCE = 'reference'
+    REFERENC2 = "multi_reference"
     TEST = 'test'
     TEST2 = 'test_2'
 
 class SchemaType(BaseModel):
-    name: Schema = Schema.REFERENCE
+    name: Schema = Schema.DEV
+
+class SchemaValidate(BaseModel):
+    name: str
+    data: dict
 
 @app.get("/")
 async def read_root():
@@ -54,3 +68,19 @@ async def get_schema(schema_type: SchemaType):
         example_schema = json.load(f)
     # print(schema_type.model_json_schema())
     return example_schema
+
+@app.post("/validate")
+async def validate_schema(sc: SchemaValidate):
+    print(sc)
+    json_schema_file = json_schema_files[sc.name]
+    with open(json_schema_file) as f:
+        example_schema = json.load(f)
+    try:
+        validate(instance=sc.data, schema=example_schema)
+        # print("validated")
+        return {"status": "valid"}
+    except ValidationError as e:
+        print("validation failed")
+        return {"status": "invalid", "message": e.message}
+
+print(SchemaValidate.model_json_schema())

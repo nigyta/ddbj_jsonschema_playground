@@ -33,6 +33,8 @@ const uiSchema = {
     }
   };
 
+
+
 const log = (type) => console.log.bind(console, type);
 
 function App() {
@@ -77,6 +79,12 @@ function App() {
         setFormData(e.formData);
     }
 
+    const validate = () => {
+        axios.post('http://localhost:8000/validate', { name: schemaName, data: formData })
+            .then((response) => { console.log(response.data) }) // レスポンスからデータを取得してセット
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
     return (
         <div className="App container">
             <Row>
@@ -87,7 +95,7 @@ function App() {
                         :
                         <p>loading...</p>
                     }
-
+                    <button onClick={() => fetch_schema(schemaName)}>Fetch Schema</button>
                     <hr /><br /><br />
 
                     {schema ?
@@ -100,9 +108,12 @@ function App() {
                         >
 
                         </Form>
+
                         :
                         <p>loading...</p>
                     }
+                            <button onClick={() => validate()}>Validation</button>
+
                 </Col>
                 <Col>
                     <h3>Form Data</h3>
