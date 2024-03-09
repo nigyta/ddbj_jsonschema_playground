@@ -32,6 +32,12 @@ docker-compose build
 ```
 This may take time since it includes installation of React and its related libraries, which is not included in `docker-compose-dev.yml`  
 
+or, to start only the backend
+
+```
+docker-compose -f docker-compose-api.yml up
+```
+
 3. Installation of React and its related libraries
 ```
 docker-compose run frontend npm install
@@ -46,6 +52,33 @@ docker-compose up
 5. Access the services  
 Open http://localhost:8000/docs for API specs.  
 Open http://localhost:3000 to access the web form automaticcaly generated based on the definition of JSON schema.
+
+## Get Schema
+```
+curl -X 'POST' \
+  'http://localhost:8000/schema' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "reference"
+}'
+```
+
+In the above example, `name` should be either of `minimum`, `reference`, `submission_category`, `multi_reference`, `ddbj_dev1`. 
+
+## Validation
+Specify schema `name` and send json data.
+```
+curl -X 'POST' \
+  'http://localhost:8000/validate' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "minimum",
+  "data": { "keyword": [ "WGS", "STANDARD_DRAFT" ], "biosample": [], "data_type": "WGS", "contact": "John" }
+}'
+```
+
 
 ## How to edit JSON schema  
 JSON schema files are located under `backend`.

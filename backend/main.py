@@ -24,7 +24,7 @@ json_schema_files = {
     "dev": "test_schema.json",
     "ddbj_dev1": "ddbj_submission_dev1.json",
     "minimum": "example_schema_minimum.json",
-    "submission_category": "data submission_category.json",
+    "submission_category": "submission_category.json",
     "reference": "reference_schema.json",
     "multi_reference": "reference_schema_multi.json",
     "test": "example_schema.json",

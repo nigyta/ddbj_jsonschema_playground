@@ -5,54 +5,35 @@
     "type": "object",
     "properties" :{
         "title": {
-            "name": "title",
             "title": "Reference Title",
-            "qualifier": "title",
-            "feature": "REFERENCE",
-            "entry": "COMMON",
             "type": "string",
             "pattern": "^[A-Za-z0-9 ]*$",
-            "example": "Mouse Genome Sequencing",
-            "help": "Title of the paper associated to the submission."
+            "description": "Title of the paper associated to the submission."
         },
         "author": {
-            "name": "author",
             "title": "Author",
-            "qualifier": "keyword",
-            "feature": "REFERENCE",
-            "entry": "COMMON",
             "type": "array",
             "items": {
                 "type": "string",
-                "pattern": "^[A-Za-z0-9',\\.\\-]*$"
+                "pattern": "^[A-Za-z0-9',\\.\\-]*$",
+                "description": "Author name. example. Smith,J. or Suzuki,H."
             },
-            "example": ["Robertson,G.R.", "Mishima,H."],
             "minItems": 1,
-            "help": "Keyword for the data division. Optional. For example, WGS, TSA, GSS, EST, etc."
+            "description": "Author name. example. Smith,J. or Suzuki,H."
         },
         "status": {
-            "name": "status",
             "title": "Status",
-            "qualifier": "status",
-            "feature": "REFERENCE",
-            "entry": "COMMON",
             "type": "string",
             "enum": ["Unpublished", "In press", "Published"],
-            "example": "WGS",
-            "help": "Reference status",
+            "description": "Reference status",
             "default": "Unpublished"
         },
         "year": {
-            "name": "year",
             "title": "Year",
-            "qualifier": "year",
-            "feature": "REFERENCE",
-            "entry": "COMMON",
             "type": "integer",
             "minimum": 1980,
             "maximum": 2100,
-            "example": "2024",
-            "help": "Reference year"           
+            "description": "Reference year"           
         }
     },
     "required": ["title", "author", "status", "year"],    
@@ -72,15 +53,10 @@
                             "enum": ["In press"]
                         },
                         "journal": {
-                            "name": "journal",
                             "title": "Journal",
-                            "qualifier": "journal",
-                            "feature": "REFERENCE",
-                            "entry": "COMMON",
                             "type": "string",
                             "pattern": "^[A-Za-z0-9',\\.\\- ]*$",
-                            "example": "Nature",
-                            "help": "Journal name"
+                            "description": "Journal name"
                         }
                     },
                     "required": ["journal"]
@@ -91,15 +67,10 @@
                             "enum": ["Published"]
                         },
                         "journal": {
-                            "name": "journal",
                             "title": "Journal",
-                            "qualifier": "journal",
-                            "feature": "REFERENCE",
-                            "entry": "COMMON",
                             "type": "string",
                             "pattern": "^[A-Za-z0-9',\\.\\- ]*$",
-                            "example": "Nature",
-                            "help": "Journal name"
+                            "description": "Journal name"
                         },
                         "volume": {
                             "title": "Volume",
@@ -120,13 +91,6 @@
                             "title": "PubMed ID (optional)",
                             "type": "string",
                             "pattern": "^[0-9]*$"
-                        },
-                        "test": {
-                            "type":"array",
-                            "items": {
-                                "type": "string",
-                                "enum": ["a", "b", "c"]
-                                }
                         }                        
                     },
                     "required": ["journal", "volume", "start_page"],
